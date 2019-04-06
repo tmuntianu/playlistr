@@ -1,9 +1,14 @@
 import spotipy
-
+testToken = 'BQA5B84MW93-WhwPGAL1fdPTAiKMXHpFHpKIZlCI8yJfE5mjFM_sHbW8HLqzFJa21MQx1Zd9NflJHkqkjWMYOxMpgCJpKM98HTLdV96Si6_QOuq3AsuHi4_vSnlZ2SJzJr74hAFp6e2al73L'
+testTokens = []
+testTokens.push(testToken)
 def getTopTracks(sps):
 
 
 
+def getTopGenres(tracks):
+	counter = {}
+	for track in tracks
 
 
 
@@ -27,3 +32,7 @@ def authSpotipy(tokens):
 	for token in tokens
 		sps.append(spotipy.Spotify(auth=token))
 	return sps
+
+
+
+generatePlaylists(testToken, testTokens)
