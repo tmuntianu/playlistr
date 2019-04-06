@@ -48,8 +48,10 @@ def auth_success():
         token_info = oauth.get_access_token(code)
         user = db.auth_user(id=auth.user_id)
         user.update_record(sp_auth_token=token_info['access_token'],sp_refresh_token=token_info['refresh_token'])
-
-    return dict(success = success)
+    user = db.auth_user(id=auth.user_id)
+    form = SQLFORM(db.sp_group, hidden=dict(sp_owner=user))
+    form.vars.sp_owner = request.vars.sp_owner
+    return dict(form=form, success = success)
 
 # ---- action to server uploaded static content (required) ---
 @cache.action()

@@ -151,7 +151,9 @@ if configuration.get('scheduler.enabled'):
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
 
-db.define_table('sp_group', Field('sp_owner', 'reference auth_user'), Field('sp_member', 'reference auth_user'))
+# db.define_table('sp_group', Field('sp_owner', 'reference auth_user'), Field('sp_member', 'list:reference auth_user'))
+db.define_table('sp_group', Field('sp_owner', 'reference auth_user'), Field('sp_member', 'list:string'))
+
 
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
