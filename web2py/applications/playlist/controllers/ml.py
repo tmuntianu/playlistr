@@ -13,17 +13,26 @@ def getTopTracks(sps):
 	return topList
 
 
-def getAlbum(track, sp):
-	return sp.album(track["album"]["id"])
+def getArtist(track, sp):
+	return sp.artist(track["artists"][0]["id"])
 
 def getTopGenres(tracks, sp):
 	genres = {}
+	newTracks = []
 	for track in tracks:
-		genre = getAlbum(track, sp).genres[0]
-		if genre in genres:
-			genres[genre] +=1
-		else:
-			genres[genre] = 1
+		newTrack = track
+		newTrack["genres"] = []
+		artist = getArtist(track, sp)
+		genre = ""
+		if len(artist["genres"]) > 0:
+			for subGenre in artist["genres"]:
+				newTrack["genres"].append(subGenre)
+				if subGenre in genres:
+					genres[genre] +=1
+				else:
+					genres[genre] = 1
+		newTracks.append(newTrack)
+		
 
 	firstCount = 0
 	secondCount = 0
@@ -31,7 +40,7 @@ def getTopGenres(tracks, sp):
 
 	bestArray = []
 
-	for key in genres.keys:
+	for key in genres.keys():
 		if genres[key] >= firstCount:
 			bestArray.insert(0, key)
 		elif genres[key] >= secondCount:
@@ -39,7 +48,7 @@ def getTopGenres(tracks, sp):
 		elif genres[key] >= thirdCount:
 			bestArray.insert(2, key)
 
-	return bestArray[0:3]
+	return (bestArray[0:3], newTracks)
 	
 
 
@@ -75,6 +84,6 @@ def authSpotipyOwner(token):
 sps = authSpotipy(testTokens)
 sp = authSpotipyOwner(testToken)
 tracks = getTopTracks(sps)
-print (getTopGenres(tracks, sp))
+print (getTopGenres(tracks, sp)[0])
 #generatePlaylists(testToken, testTokens)
 
