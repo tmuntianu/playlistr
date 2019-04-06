@@ -78,7 +78,7 @@ def featureVectors(tracksbyGenre):
 
 
 def createPlaylists(sp, currentUserId, tracksLists):
-	print (sp.user_playlist_create(currentUserId, "Test Playlist1"))
+	print(sp.user_playlist_create(currentUserId, "Test Playlist2"))
 
 
 
@@ -128,12 +128,11 @@ def refreshToken():
 	return oauth.refresh_access_token('AQDSHea-PFwOCyu2RSB7nmqwqaGXwvFUaOQ_PIeyOsHlc2qCDJweevuk3fXPVcFFg1_Zuf_ULMa6gc7xnfmPPXdnwtal-eEE8gxkyRW4fhDepsY064159ST4xJrzFtgFbbKh3Q')
 
 
-'''
+
 sps = authSpotipy(testTokens)
 sp = authSpotipyOwner(testToken)
-currentUserId = sp.current_user()
+currentUserId = sp.current_user()['id']
 createPlaylists(sp, currentUserId, [])
 #tracks = getTopTracks(sps)
 #getTracksByGenre(getTopGenres(tracks, sp))
 #generatePlaylists(testToken, testTokens)
-'''
