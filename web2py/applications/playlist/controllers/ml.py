@@ -1,5 +1,5 @@
 import spotipy
-testToken = 'BQDKqL5z7gDn9ocYfBooOqEfxda5CupMn9QCJ66IQJpOhftLblXPrzxEpXoNP6AHzCShBAPZM66drem__N3uTmf91ONU0-rx1RUmfv5vcGuN80CQ_B1d8VKmYHgSfMuZag1IT4EN9UDYvqcCgukmAcwT'
+testToken = 'BQAAF3xdLe2IhFRxP63ajBje3fztMAjOD4s60Dbzt8WAh3zH3Mtp9e2weoMrv_34RG872sA3lo731e8_ww5S2yJmT33e1f-wJTBDaDJnPd_3v2jtjS_aVId1owBDaZCu7Aq4l0w6wCwwmJl1jaN64y5LM0AfCrrCn_GtXIzQZOeYjiQG5TpZ6g'
 testTokens = []
 testTokens.append(testToken)
 def getTopTracks(sps):
@@ -23,16 +23,15 @@ def getTopGenres(tracks, sp):
 		newTrack = track
 		newTrack["genres"] = []
 		artist = getArtist(track, sp)
-		genre = ""
+		# genre = ""
 		if len(artist["genres"]) > 0:
 			for subGenre in artist["genres"]:
 				newTrack["genres"].append(subGenre)
 				if subGenre in genres:
-					genres[genre] +=1
+					genres[subGenre] +=1
 				else:
-					genres[genre] = 1
+					genres[subGenre] = 1
 		newTracks.append(newTrack)
-		
 
 	firstCount = 0
 	secondCount = 0
@@ -43,13 +42,43 @@ def getTopGenres(tracks, sp):
 	for key in genres.keys():
 		if genres[key] >= firstCount:
 			bestArray.insert(0, key)
+			firstCount = genres[key]
 		elif genres[key] >= secondCount:
 			bestArray.insert(1, key)
+			secondCount = genres[key]
 		elif genres[key] >= thirdCount:
 			bestArray.insert(2, key)
+			thirdCount = genres[key]
 
 	return (bestArray[0:3], newTracks)
-	
+
+def getTracksByGenre(genresNewTracks):
+	print(genresNewTracks)
+	genreDict = {}
+	print(genresNewTracks[0])
+	for genre in genresNewTracks[0]:
+		genreDict[genre] = []
+	for track in genresNewTracks[1]:
+		for genre in genresNewTracks[0]:
+			if genre in track["genres"]:
+				genreDict[genre].append(track)
+	print(genreDict)
+	return genreDict
+
+def featureVectors(tracksbyGenre):
+	track_list = []
+
+	for item in tracksbyGenre.keys(): # list of tracks
+		track_list.append(item)
+
+	feature_list = audio_features(track_list)
+	print(feature_list)
+
+# Given a dictionary from genre to list of tracks
+# Take every song in that genre
+# Average each's audio features
+# create a new vector
+# return this vector as the seed
 
 
 # def getTopGenres(tracks):
@@ -70,8 +99,6 @@ def getTopGenres(tracks, sp):
 # 	playlists = getTracksFromSeed(featureVectors) #returns a dictionary of genre name to track array
 # 	createPlaylists(ownerToken, playlists) #creates playlists in the owner's account
 
-
-
 def authSpotipy(tokens):
 	sps = []
 	for token in tokens:
@@ -84,6 +111,6 @@ def authSpotipyOwner(token):
 sps = authSpotipy(testTokens)
 sp = authSpotipyOwner(testToken)
 tracks = getTopTracks(sps)
-print (getTopGenres(tracks, sp)[0])
+getTracksByGenre(getTopGenres(tracks, sp))
 #generatePlaylists(testToken, testTokens)
 
