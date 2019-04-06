@@ -83,7 +83,8 @@ def authSpotipyOwner(token):
 
 sps = authSpotipy(testTokens)
 sp = authSpotipyOwner(testToken)
-tracks = getTopTracks(sps)
-print (getTopGenres(tracks, sp)[0])
+'''tracks = getTopTracks(sps)
+print (getTopGenres(tracks, sp)[0])'''
+print (sp.current_user())
 #generatePlaylists(testToken, testTokens)
 
