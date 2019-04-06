@@ -11,7 +11,7 @@ def index():
     # TODO add scope?
     client_id="22afe11d6c9a4302804622924738a872"
     client_secret="f6ab191a59de4b59af13dc44d7ec16c5"
-    redirect_uri="http://127.0.0.1:8000/playlist/default/auth_success"
+    redirect_uri="http://127.0.0.1:8000/init/default/auth_success"
     oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret, redirect_uri)
     auth_url = oauth.get_authorize_url()
     return dict(auth_url=auth_url, title='Playlistr', message='Welcome to Playlistr!')
@@ -37,7 +37,11 @@ def user():
 
 @auth.requires_login()
 def auth_success():
-    pass
+    success = 'unsuccessful!'
+    if request.vars.code:
+        code = request.vars.code
+        success = 'successful!'
+    return dict(success = success)
 
 # ---- action to server uploaded static content (required) ---
 @cache.action()
