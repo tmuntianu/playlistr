@@ -1,14 +1,28 @@
 
 
-def getTopTracks(tokens):
+def getTopTracks(sps): # List of spotify objects
+
+    topList = []
+
+    for sp in sps:
+        topList.append(sp.current_user_top_tracks(limit = 50, offset = 0, time_range = 'medium_term')
+                       
+    return topList
+
+# Take top 50 tracks of each user
+# Add to master list
+# return
+
+# For rest of tokens:
 
 
+def getTopGenres(tracks):
 
+def getTracksByGenre(tracks, genres):
 
+def getFeatureVectors(tracksbyGenre):
 
-
-
-
+def getTracksFromSeed(featureVectors):
 
 
 def generatePlaylists(ownerToken, tokens):
