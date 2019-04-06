@@ -4,13 +4,15 @@ testToken = "BQDKqL5z7gDn9ocYfBooOqEfxda5CupMn9QCJ66IQJpOhftLblXPrzxEpXoNP6AHzCS
 testTokens = []
 testTokens.append(testToken)
 def getTopTracks(sps):
+	topList = []
 
-    topList = []
+	for sp in sps:
+		tempTracks = sp.current_user_top_tracks(limit = 50, offset = 0, time_range = 'medium_term')
+		for item in tempTracks["items"]:
+			topList.append(item)
 
-    for sp in sps:
-        topList.append(sp.current_user_top_tracks(limit = 50, offset = 0, time_range = 'medium_term'))
-                       
-    return topList
+	return topList
+
 
 # Take top 50 tracks of each user
 # Add to master list
