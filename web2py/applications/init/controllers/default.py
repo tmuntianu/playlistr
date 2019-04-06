@@ -5,14 +5,13 @@
 # -------------------------------------------------------------------------
 import spotipy
 import spotipy.util
-
 # ---- example index page ----
 def index():
-    # TODO add scope?
+    scope = 'user-top-read playlist-modify-public'
     client_id="22afe11d6c9a4302804622924738a872"
     client_secret="f6ab191a59de4b59af13dc44d7ec16c5"
     redirect_uri="http://127.0.0.1:8000/init/default/auth_success"
-    oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret, redirect_uri)
+    oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret, redirect_uri, scope=scope)
     auth_url = oauth.get_authorize_url()
     return dict(auth_url=auth_url, title='Playlistr', message='Welcome to Playlistr!')
 
@@ -41,6 +40,15 @@ def auth_success():
     if request.vars.code:
         code = request.vars.code
         success = 'successful!'
+        scope = 'user-top-read playlist-modify-public'
+        client_id="22afe11d6c9a4302804622924738a872"
+        client_secret="f6ab191a59de4b59af13dc44d7ec16c5"
+        redirect_uri="http://127.0.0.1:8000/init/default/auth_success"
+        oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret, redirect_uri, scope=scope)
+        token_info = oauth.get_access_token(code)
+        user = db.auth_user(id=auth.user_id)
+        user.update_record(sp_auth_token=token_info['access_token'],sp_refresh_token=token_info['refresh_token'])
+
     return dict(success = success)
 
 # ---- action to server uploaded static content (required) ---
