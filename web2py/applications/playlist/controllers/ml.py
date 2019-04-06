@@ -1,14 +1,15 @@
 import spotipy
-testToken = 'BQA5B84MW93-WhwPGAL1fdPTAiKMXHpFHpKIZlCI8yJfE5mjFM_sHbW8HLqzFJa21MQx1Zd9NflJHkqkjWMYOxMpgCJpKM98HTLdV96Si6_QOuq3AsuHi4_vSnlZ2SJzJr74hAFp6e2al73L'
+testToken = 'BQDKqL5z7gDn9ocYfBooOqEfxda5CupMn9QCJ66IQJpOhftLblXPrzxEpXoNP6AHzCShBAPZM66drem__N3uTmf91ONU0-rx1RUmfv5vcGuN80CQ_B1d8VKmYHgSfMuZag1IT4EN9UDYvqcCgukmAcwT'
 testTokens = []
-testTokens.push(testToken)
+testTokens.append(testToken)
 def getTopTracks(sps):
 
 
 
 def getTopGenres(tracks):
 	counter = {}
-	for track in tracks
+	for track in tracks:
+
 
 
 
