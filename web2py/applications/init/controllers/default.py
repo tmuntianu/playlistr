@@ -52,7 +52,6 @@ def auth_success():
     user = db.auth_user(id=auth.user_id)
     owner_email = user.email
     form = SQLFORM(db.sp_group, labels = {'sp_member':'Emails'})
-
     if form.validate() and form.vars.sp_member:
         for row in db(db.sp_group.sp_owner == owner_email).select():
             row.delete_record()
@@ -84,7 +83,8 @@ def makelist():
             new_token = oauth.refresh_access_token(refr_token)
             tokens.append(new_token['access_token'])
     sp_objs = playlist.authSpotipy(tokens)
-    url = playlist.make_playlist(sp_objs)
+    url = gpr.make_playlist(sp_objs)
+    # url = playlist.make_playlist(sp_objs)
     return dict(url = url)
 
 
