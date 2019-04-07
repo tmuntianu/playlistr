@@ -5,6 +5,7 @@
 # -------------------------------------------------------------------------
 import spotipy
 import spotipy.util
+import ml
 # ---- example index page ----
 def index():
     scope = 'user-top-read playlist-modify-public'
@@ -82,8 +83,9 @@ def makelist():
             oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret, redirect_uri, scope=scope)
             new_token = oauth.refresh_access_token(refr_token)
             tokens.append(new_token['access_token'])
-        
-    return dict(tokens = tokens)
+    sp_objs = ml.authSpotipy(tokens)
+    url = ml.main(sp_objs)
+    return dict(url = url)
 
 
 # ---- action to server uploaded static content (required) ---

@@ -19,10 +19,10 @@ def refreshToken():
 	return oauth.refresh_access_token('AQDSHea-PFwOCyu2RSB7nmqwqaGXwvFUaOQ_PIeyOsHlc2qCDJweevuk3fXPVcFFg1_Zuf_ULMa6gc7xnfmPPXdnwtal-eEE8gxkyRW4fhDepsY064159ST4xJrzFtgFbbKh3Q')
 
 
-testToken = 'BQBrWxT62zOd6ci1C0sTIs7Vn8wZ3teazf3fjFlUGAt774nfdGLhUblcu-xHw4QXvXh8qman9h5Nn2AvQaDdDSkUWpvuGYWPPbnkdhcry1dI_Bj4GIuibjUzUyAr5szzum1MHL8uPzH6DNNW8Gatoa_xuclAQS1tMafEH5wHkjfEDAe-OG4Ww3vRCad87g'
-testTokens = []
-testToken = refreshToken()['access_token']
-testTokens.append(testToken)
+# testToken = 'BQBrWxT62zOd6ci1C0sTIs7Vn8wZ3teazf3fjFlUGAt774nfdGLhUblcu-xHw4QXvXh8qman9h5Nn2AvQaDdDSkUWpvuGYWPPbnkdhcry1dI_Bj4GIuibjUzUyAr5szzum1MHL8uPzH6DNNW8Gatoa_xuclAQS1tMafEH5wHkjfEDAe-OG4Ww3vRCad87g'
+# testTokens = []
+# testToken = refreshToken()['access_token']
+# testTokens.append(testToken)
 
 
 def getTopTracks(sp):
@@ -186,7 +186,7 @@ def createPlaylists(currentUserId, trackList, owner):
 
 	sp.user_playlist_add_tracks(currentUserId, playlist["id"], trackIDList)
 
-	print(trackNameList)
+	return playlist['external_urls']['spotify']
 
 
 def main(userList):
@@ -198,13 +198,14 @@ def main(userList):
 	trackList, owner = compileRecommendations(spList)
 	owner = userList[0]
 	userID = owner.current_user()['id']
-	createPlaylists(userID, trackList, owner)
+	url = createPlaylists(userID, trackList, owner)
+	return url
 
 
-sps = authSpotipy(testTokens)
-sp = authSpotipyOwner(testToken)
-x = [sp]
-main(x)
+# sps = authSpotipy(testTokens)
+# sp = authSpotipyOwner(testToken)
+# x = [sp]
+# main(x)
 
 
 #Todo done:
