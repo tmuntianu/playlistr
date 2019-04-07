@@ -51,11 +51,12 @@ def auth_success():
     user = db.auth_user(id=auth.user_id)
     owner_email = user.email
     form = SQLFORM(db.sp_group, labels = {'sp_member':'Emails'})
-    
+
     if form.validate():
         for row in db(db.sp_group.sp_owner == owner_email).select():
             row.delete_record()
         db.sp_group.insert(sp_owner=owner_email, sp_member=form.vars.sp_member)
+        return redirect(URL('makelist'))
 
     return dict(form=form)
 
