@@ -10,13 +10,13 @@ def authSpotipy(tokens):
 def authSpotipyOwner(token):
 	return spotipy.Spotify(auth=token)
 
-def refreshToken():
+def refreshToken(token):
 	scope = 'user-top-read playlist-modify-public'
 	client_id="22afe11d6c9a4302804622924738a872"
 	client_secret="f6ab191a59de4b59af13dc44d7ec16c5"
 	redirect_uri="http://127.0.0.1:8000/init/default/auth_success"
 	oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret, redirect_uri, scope=scope)
-	return oauth.refresh_access_token('AQDSHea-PFwOCyu2RSB7nmqwqaGXwvFUaOQ_PIeyOsHlc2qCDJweevuk3fXPVcFFg1_Zuf_ULMa6gc7xnfmPPXdnwtal-eEE8gxkyRW4fhDepsY064159ST4xJrzFtgFbbKh3Q')
+	return oauth.refresh_access_token(token)
 
 
 def getTopTracks(sp):
