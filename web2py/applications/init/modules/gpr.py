@@ -81,8 +81,8 @@ def make_playlist(sp_objs):
     X = np.zeros(shape = n, dtype=float)
     for i in range(0, n):
         X[i] = i % 50 + distances[i]
-
-    gpr = GaussianProcessRegressor(normalize_y=True, n_restarts_optimizer=10).fit(X.T.reshape(-1, 1), features)
+    print(X.reshape(-1,1).shape)
+    gpr = GaussianProcessRegressor(normalize_y=True, n_restarts_optimizer=10).fit(X.reshape(-1, 1), features)
     # other = np.zeros(shape=n, dtype=float)
     # for i in range(0,50):
     #     other[i] += i
@@ -107,8 +107,8 @@ def make_playlist(sp_objs):
     sp_objs[0].user_playlist_add_tracks(user_id, playlist['id'], playlist_track_ids)
     return playlist['external_urls']['spotify']
 
-# token_info = pl.refreshToken('AQCs5y17o1Fgoe9eRrtLrsee2Wv6qzgc1uSQe7ed5nYTKOa6Uuun1WUQuzVCT9R-bZ8OBCtDGMgHzuXd0HZEK6DE-Oyq9dMafpnmaYb8OkpRDpMj6P9NJAiZxg3EJrIcw8A4vQ')
-# token = token_info['access_token']
-# tokens = [token]
-# sp = [spotipy.Spotify(auth=token)]
-# make_playlist(sp)
+token_info = pl.refreshToken('AQCs5y17o1Fgoe9eRrtLrsee2Wv6qzgc1uSQe7ed5nYTKOa6Uuun1WUQuzVCT9R-bZ8OBCtDGMgHzuXd0HZEK6DE-Oyq9dMafpnmaYb8OkpRDpMj6P9NJAiZxg3EJrIcw8A4vQ')
+token = token_info['access_token']
+tokens = [token]
+sp = [spotipy.Spotify(auth=token)]
+make_playlist(sp)
