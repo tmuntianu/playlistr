@@ -152,8 +152,8 @@ if configuration.get('scheduler.enabled'):
 # -------------------------------------------------------------------------
 
 # db.define_table('sp_group', Field('sp_owner', 'reference auth_user'), Field('sp_member', 'list:reference auth_user'))
-db.define_table('sp_group', Field('sp_owner', 'reference auth_user'), Field('sp_member', 'list:string'))
-
+db.define_table('sp_group', Field('sp_owner', 'string', unique=True), Field('sp_member', 'list:string')) # , requires=IS_IN_DB(db,'auth_user.email',multiple=True)
+db.sp_group.sp_owner.writable = False
 
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing

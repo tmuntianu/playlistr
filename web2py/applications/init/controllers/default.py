@@ -36,10 +36,8 @@ def user():
 
 @auth.requires_login()
 def auth_success():
-    success = 'unsuccessful!'
-    if request.vars.code:
+    if request.vars.code and not session.auth_success:
         code = request.vars.code
-        success = 'successful!'
         scope = 'user-top-read playlist-modify-public'
         client_id="22afe11d6c9a4302804622924738a872"
         client_secret="f6ab191a59de4b59af13dc44d7ec16c5"
@@ -48,10 +46,18 @@ def auth_success():
         token_info = oauth.get_access_token(code)
         user = db.auth_user(id=auth.user_id)
         user.update_record(sp_auth_token=token_info['access_token'],sp_refresh_token=token_info['refresh_token'])
+        session.auth_success = True
+
     user = db.auth_user(id=auth.user_id)
-    form = SQLFORM(db.sp_group, hidden=dict(sp_owner=user))
-    form.vars.sp_owner = request.vars.sp_owner
-    return dict(form=form, success = success)
+    owner_email = user.email
+    form = SQLFORM(db.sp_group, labels = {'sp_member':'Emails'})
+    
+    if form.validate():
+        for row in db(db.sp_group.sp_owner == owner_email).select():
+            row.delete_record()
+        db.sp_group.insert(sp_owner=owner_email, sp_member=form.vars.sp_member)
+
+    return dict(form=form)
 
 # ---- action to server uploaded static content (required) ---
 @cache.action()
