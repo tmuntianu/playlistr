@@ -5,7 +5,7 @@
 # -------------------------------------------------------------------------
 import spotipy
 import spotipy.util
-import ml
+import playlist
 # ---- example index page ----
 def index():
     scope = 'user-top-read playlist-modify-public'
@@ -83,8 +83,8 @@ def makelist():
             oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret, redirect_uri, scope=scope)
             new_token = oauth.refresh_access_token(refr_token)
             tokens.append(new_token['access_token'])
-    sp_objs = ml.authSpotipy(tokens)
-    url = ml.main(sp_objs)
+    sp_objs = playlist.authSpotipy(tokens)
+    url = playlist.make_playlist(sp_objs)
     return dict(url = url)
 
 
