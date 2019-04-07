@@ -42,13 +42,16 @@ def get_seed_genres(tracks, sp):
         seed_genres.append(b)
     return seed_genres
 
-def get_audio_features(track_ids, token):
+def get_audio_features(track_ids, sp):
     features = np.ndarray(shape=(len(track_ids),11), dtype=float)
-    sp = spotipy.Spotify(auth=token)
-    for x in range(0, int(np.floor(len(track_ids)/100)) + 1):
-        json = sp.audio_features(tracks=track_ids[x*100:(x+1)*100])
+    for x in range(0, int(np.ceil(len(track_ids)/50))):
+        y = (x + 1) * 50
+        if (x+1)*50 > len(track_ids):
+            y = len(track_ids)
+        send_tracks = track_ids[(x*50):y]
+        response = sp.audio_features(tracks=send_tracks)
         i = 0
-        for audio_features in json:
+        for audio_features in response:
             features[i] = [audio_features['danceability'], audio_features['energy'], audio_features['key'], audio_features['loudness'], audio_features['mode'], audio_features['speechiness'], audio_features['acousticness'], audio_features['instrumentalness'], audio_features['liveness'], audio_features['valence'], audio_features['tempo']]
             i += 1
     return features
@@ -100,5 +103,12 @@ def make_playlist(sp_objs):
         playlist_track_ids.append(track['id'])
 
     user_id = sp_objs[0].current_user()['id']
-    playlist_id = sp_objs[0].user_playlist_create(user_id, 'GPR')['id']
-    sp_objs[0].user_playlist_add_tracks(user_id, playlist_id, playlist_track_ids)
+    playlist = sp_objs[0].user_playlist_create(user_id, 'GPR')
+    sp_objs[0].user_playlist_add_tracks(user_id, playlist['id'], playlist_track_ids)
+    return playlist['external_urls']['spotify']
+
+# token_info = pl.refreshToken('AQCs5y17o1Fgoe9eRrtLrsee2Wv6qzgc1uSQe7ed5nYTKOa6Uuun1WUQuzVCT9R-bZ8OBCtDGMgHzuXd0HZEK6DE-Oyq9dMafpnmaYb8OkpRDpMj6P9NJAiZxg3EJrIcw8A4vQ')
+# token = token_info['access_token']
+# tokens = [token]
+# sp = [spotipy.Spotify(auth=token)]
+# make_playlist(sp)
