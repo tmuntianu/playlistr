@@ -20,6 +20,11 @@ def get_all_track_ids(sp_objs):
             track_ids.append(item['id'])
     return track_ids
 
+def catch(expr):
+    if expr == float('NaN') or expr == float('Inf') or expr == -float('Inf'):
+        return 0
+    else:
+        return expr
 
 def get_seed_genres(tracks, sp):
     genres = {}
@@ -70,19 +75,19 @@ def make_playlist(sp_objs):
     for i in range(0, n-1):
         norm_i = np.linalg.norm(features[i])
         norm_i_1 = np.linalg.norm(features[i+1])
-        dist = np.sign(norm_i - norm_i_1)*np.linalg.norm(features[i] - features[i+1])
+        dist = catch(np.sign(norm_i - norm_i_1)*np.linalg.norm(features[i] - features[i+1]))
         # dist = np.linalg.norm(features[i]-features[i+1]) normal GPR
         if dist > dist_max:
             dist_max = dist
-        distances[i] = dist
+        distances[i] = catch(dist)
 
-    distances = np.divide(distances, dist_max / dnp)
+    distances = catch(np.divide(distances, dist_max / dnp))
     distances[n-1] += np.abs(distances[n-2])
     X = np.zeros(shape = n, dtype=float)
     for i in range(0, n):
-        X[i] = i % 50 + distances[i]
-    print(X.reshape(-1,1).shape)
-    gpr = GaussianProcessRegressor(normalize_y=True, n_restarts_optimizer=10).fit(X.reshape(-1, 1), features)
+        X[i] = i % 50 # + distances[i]
+    X2 = X.reshape(-1,1)
+    gpr = GaussianProcessRegressor(normalize_y=True, n_restarts_optimizer=10).fit(X2, features)
     # other = np.zeros(shape=n, dtype=float)
     # for i in range(0,50):
     #     other[i] += i
@@ -109,6 +114,8 @@ def make_playlist(sp_objs):
 
 token_info = pl.refreshToken('AQCs5y17o1Fgoe9eRrtLrsee2Wv6qzgc1uSQe7ed5nYTKOa6Uuun1WUQuzVCT9R-bZ8OBCtDGMgHzuXd0HZEK6DE-Oyq9dMafpnmaYb8OkpRDpMj6P9NJAiZxg3EJrIcw8A4vQ')
 token = token_info['access_token']
-tokens = [token]
-sp = [spotipy.Spotify(auth=token)]
+tokeni2 = pl.refreshToken('AQAqEHY5iqOmGfJr1xw760D_N7QKT4om_WHaXP5_NsbKVP1P5nqDcuuhWhwMZyLsT0yS1Oi3D3vENAHiXXhgdv0Uj09hK-88dpWPr7o8LOcZoQ-G4z8K6kATlemBprQymF8r4A')
+token2 = tokeni2['access_token']
+tokens = [token, token2]
+sp = create_sp_objs(tokens)
 make_playlist(sp)
